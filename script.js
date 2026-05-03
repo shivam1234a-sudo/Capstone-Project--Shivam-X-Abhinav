@@ -1,137 +1,130 @@
 let currentBooks = [];
 const container = document.getElementById("container");
 
-window.onload = function () {
-  getBooks("bestsellers");   // Google API books
-  loadMyBooks();            // Flask backend books
+window.onload = function(){
+getBooks("bestsellers");
+loadMyBooks();
 };
 
-// Search books from Google API
-function searchBooks() {
-  const query = document.getElementById("searchInput").value;
-  getBooks(query);
+function searchBooks(){
+const query = document.getElementById("searchInput").value;
+getBooks(query);
 }
 
-// Get books from Google API
-function getBooks(query) {
-  container.innerHTML = "<h2>Loading...</h2>";
+function getBooks(query){
 
-  fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
-    .then(res => res.json())
-    .then(data => {
+container.innerHTML = "Loading...";
 
-      if (!data.items) {
-        container.innerHTML = "<h2>No books found</h2>";
-        return;
-      }
+fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
+.then(res=>res.json())
+.then(data=>{
 
-      currentBooks = data.items;
-      displayGoogleBooks(currentBooks);
-      loadMyBooks();
-    })
-    .catch(err => console.log(err));
+if(!data.items){
+container.innerHTML="No Books Found";
+return;
 }
 
-// Display Google books
-function displayGoogleBooks(books) {
+currentBooks = data.items;
+displayBooks(currentBooks);
+loadMyBooks();
 
-  container.innerHTML = "";
+});
 
-  books.forEach(item => {
-
-    const info = item.volumeInfo;
-
-    const card = document.createElement("div");
-    card.className = "card";
-
-    card.innerHTML = `
-      <img src="${info.imageLinks?.thumbnail || 'https://via.placeholder.com/150'}">
-      <h3>${info.title || 'No Title'}</h3>
-      <p>${info.authors ? info.authors.join(", ") : 'Unknown Author'}</p>
-      <button onclick="showDetails(
-        '${info.title || ""}',
-        '${info.authors ? info.authors.join(", ") : ""}',
-        '${info.publisher || "Not Available"}',
-        '${info.pageCount || "Unknown"}'
-      )">Details</button>
-    `;
-
-    container.appendChild(card);
-  });
 }
 
-// Load books from Flask backend
-function loadMyBooks() {
+function displayBooks(books){
 
-  fetch("http://127.0.0.1:5000/products")
-    .then(res => res.json())
-    .then(data => {
+container.innerHTML="";
 
-      data.forEach(book => {
+books.forEach(item=>{
 
-        const card = document.createElement("div");
-        card.className = "card";
+const info = item.volumeInfo;
 
-        card.innerHTML = `
-          <img src="${book.image}">
-          <h3>${book.title}</h3>
-          <p>${book.author}</p>
-          <button onclick="showDetails(
-            '${book.title}',
-            '${book.author}',
-            'Custom Added Book',
-            '${book.price}'
-          )">Details</button>
-        `;
+const card = document.createElement("div");
+card.className="card";
 
-        container.appendChild(card);
-      });
+card.innerHTML = `
+<img src="${info.imageLinks?.thumbnail || ''}">
+<h3>${info.title || 'No Title'}</h3>
+<p>${info.authors ? info.authors.join(", ") : 'Unknown'}</p>
 
-    })
-    .catch(err => console.log(err));
+<button onclick="openDetails(
+'${info.title || ''}',
+'${info.authors ? info.authors.join(", ") : 'Unknown'}',
+'${info.imageLinks?.thumbnail || ''}',
+'${info.publisher || 'Not Available'}',
+'${info.pageCount || 'Unknown'}'
+)">Details</button>
+`;
+
+container.appendChild(card);
+
+});
+
 }
 
-// Show details
-function showDetails(title, author, publisher, pages) {
-  alert(
-    "Title: " + title +
-    "\nAuthor: " + author +
-    "\nPublisher: " + publisher +
-    "\nPrice / Pages: " + pages
-  );
+function loadMyBooks(){
+
+fetch("http://127.0.0.1:5000/products")
+.then(res=>res.json())
+.then(data=>{
+
+data.forEach(book=>{
+
+const card = document.createElement("div");
+card.className="card";
+
+card.innerHTML = `
+<img src="${book.image}">
+<h3>${book.title}</h3>
+<p>${book.author}</p>
+
+<button onclick="openDetails(
+'${book.title}',
+'${book.author}',
+'${book.image}',
+'Custom Book',
+'${book.price}'
+)">Details</button>
+`;
+
+container.appendChild(card);
+
+});
+
+});
+
 }
 
-// Sort A-Z
-function sortAZ() {
+function openDetails(title,author,image,publisher,pages){
 
-  const sorted = [...currentBooks].sort((a, b) =>
-    a.volumeInfo.title.localeCompare(b.volumeInfo.title)
-  );
+localStorage.setItem("title",title);
+localStorage.setItem("author",author);
+localStorage.setItem("image",image);
+localStorage.setItem("publisher",publisher);
+localStorage.setItem("pages",pages);
 
-  displayGoogleBooks(sorted);
-  loadMyBooks();
+window.location.href="detail.html";
 }
 
-// Sort Z-A
-function sortZA() {
+function sortAZ(){
 
-  const sorted = [...currentBooks].sort((a, b) =>
-    b.volumeInfo.title.localeCompare(a.volumeInfo.title)
-  );
+const sorted = [...currentBooks].sort((a,b)=>
+a.volumeInfo.title.localeCompare(b.volumeInfo.title)
+);
 
-  displayGoogleBooks(sorted);
-  loadMyBooks();
+displayBooks(sorted);
+loadMyBooks();
+
 }
-// OPEN DETAILS PAGE
 
-function openDetails(title, author, image, publisher, pages) {
+function sortZA(){
 
-localStorage.setItem("title", title);
-localStorage.setItem("author", author);
-localStorage.setItem("image", image);
-localStorage.setItem("publisher", publisher);
-localStorage.setItem("pages", pages);
+const sorted = [...currentBooks].sort((a,b)=>
+b.volumeInfo.title.localeCompare(a.volumeInfo.title)
+);
 
-window.location.href = "details.html";
+displayBooks(sorted);
+loadMyBooks();
 
 }

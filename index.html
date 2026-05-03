@@ -3,161 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book Details</title>
+<title>Book Explorer</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 }
 
 body{
 background:linear-gradient(to right,#667eea,#764ba2);
-min-height:100vh;
 color:white;
+text-align:center;
 }
 
-/* DETAILS PAGE */
-
-.details-page{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-align-items:center;
-gap:50px;
-padding:60px 30px;
-min-height:100vh;
-}
-
-.details-book-image{
-width:320px;
-height:460px;
-object-fit:cover;
-border-radius:20px;
-box-shadow:0 15px 25px rgba(0,0,0,0.35);
-transition:0.3s;
-}
-
-.details-book-image:hover{
-transform:scale(1.03);
-}
-
-.details-info{
-max-width:550px;
-text-align:left;
-background:rgba(255,255,255,0.08);
-padding:35px;
-border-radius:20px;
-backdrop-filter:blur(10px);
-box-shadow:0 10px 20px rgba(0,0,0,0.2);
-}
-
-.details-title{
-font-size:46px;
+header{
+padding:20px;
+font-size:48px;
 font-weight:bold;
-margin-bottom:15px;
-line-height:1.2;
+background:rgba(0,0,0,0.2);
 }
 
-.details-author{
-font-size:28px;
-margin-bottom:20px;
-color:#f1f1f1;
+#searchBox{
+margin:30px;
 }
 
-.details-text{
-font-size:20px;
-margin:14px 0;
-line-height:1.6;
-color:white;
-}
-
-.details-price{
-font-size:32px;
-font-weight:bold;
-color:#ffd54f;
-margin-top:20px;
-}
-
-.details-btn{
-margin-top:30px;
-padding:14px 28px;
+input{
+padding:12px;
+width:250px;
 border:none;
-border-radius:30px;
+border-radius:25px;
+outline:none;
+}
+
+button{
+padding:12px 20px;
+border:none;
+border-radius:25px;
 background:#ff7a18;
 color:white;
-font-size:18px;
 font-weight:bold;
 cursor:pointer;
-transition:0.3s;
+margin-left:10px;
 }
 
-.details-btn:hover{
+button:hover{
 background:#ff3d00;
-transform:scale(1.05);
 }
 
+#sortingButtons{
+display:flex;
+justify-content:right;
+margin:20px;
+}
+
+.sort-button{
+background:#4caf50;
+margin:10px;
+}
+
+#container{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:25px;
+padding:20px;
+}
+
+.card{
+background:white;
+color:black;
+padding:15px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.card img{
+width:100%;
+height:250px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.card h3{
+margin:10px 0;
+font-size:18px;
+}
+
+.card p{
+color:gray;
+margin:5px 0;
+}
 </style>
 
 </head>
 
 <body>
 
-<div class="details-page">
+<header>📚 Book Explorer</header>
 
-<img id="bookImage" class="details-book-image">
-
-<div class="details-info">
-
-<h1 id="title" class="details-title"></h1>
-
-<h2 id="author" class="details-author"></h2>
-
-<p class="details-text">
-<b>Publisher:</b>
-<span id="publisher"></span>
-</p>
-
-<p class="details-text">
-<b>Pages:</b>
-<span id="pages"></span>
-</p>
-
-<p class="details-price">
-₹499
-</p>
-
-<button class="details-btn" onclick="goBack()">⬅ Back</button>
-
+<div id="searchBox">
+<input type="text" id="searchInput" placeholder="Search books...">
+<button onclick="searchBooks()">Search</button>
 </div>
 
+<div id="sortingButtons">
+<button class="sort-button" onclick="sortAZ()">Sort A-Z</button>
+<button class="sort-button" onclick="sortZA()">Sort Z-A</button>
 </div>
 
-<script>
+<h2 style="text-align:left; margin-left:20px;">Recommendations:</h2>
 
-document.getElementById("title").innerText =
-localStorage.getItem("title");
+<div id="container"></div>
 
-document.getElementById("author").innerText =
-localStorage.getItem("author");
-
-document.getElementById("bookImage").src =
-localStorage.getItem("image");
-
-document.getElementById("publisher").innerText =
-localStorage.getItem("publisher");
-
-document.getElementById("pages").innerText =
-localStorage.getItem("pages");
-
-function goBack(){
-window.location.href = "index.html";
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>

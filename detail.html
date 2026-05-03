@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Details</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(to right,#667eea,#764ba2);
+min-height:100vh;
+color:white;
+}
+
+.details-page{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-items:center;
+gap:50px;
+padding:60px 30px;
+min-height:100vh;
+}
+
+.details-book-image{
+width:320px;
+height:460px;
+object-fit:cover;
+border-radius:20px;
+box-shadow:0 15px 25px rgba(0,0,0,0.35);
+}
+
+.details-info{
+max-width:500px;
+background:rgba(255,255,255,0.08);
+padding:35px;
+border-radius:20px;
+}
+
+.details-title{
+font-size:42px;
+margin-bottom:15px;
+}
+
+.details-author{
+font-size:28px;
+margin-bottom:20px;
+}
+
+.details-text{
+font-size:20px;
+margin:12px 0;
+}
+
+.details-price{
+font-size:32px;
+font-weight:bold;
+color:#ffd54f;
+margin-top:20px;
+}
+
+.details-btn{
+margin-top:25px;
+padding:14px 28px;
+border:none;
+border-radius:30px;
+background:#ff7a18;
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="details-page">
+
+<img id="bookImage" class="details-book-image">
+
+<div class="details-info">
+
+<h1 id="title" class="details-title"></h1>
+
+<h2 id="author" class="details-author"></h2>
+
+<p class="details-text"><b>Publisher:</b> <span id="publisher"></span></p>
+
+<p class="details-text"><b>Pages:</b> <span id="pages"></span></p>
+
+<p class="details-price">₹499</p>
+
+<button class="details-btn" onclick="goBack()">⬅ Back</button>
+
+</div>
+
+</div>
+
+<script>
+document.getElementById("title").innerText = localStorage.getItem("title");
+document.getElementById("author").innerText = localStorage.getItem("author");
+document.getElementById("bookImage").src = localStorage.getItem("image");
+document.getElementById("publisher").innerText = localStorage.getItem("publisher");
+document.getElementById("pages").innerText = localStorage.getItem("pages");
+
+function goBack(){
+window.location.href="index.html";
+}
+</script>
+
+</body>
+</html>
