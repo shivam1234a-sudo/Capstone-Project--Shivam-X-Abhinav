@@ -1,141 +1,163 @@
-<html lang="en"><head>
-  <title>Book Explorer</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Details</title>
 
-    body {
-      background: linear-gradient(to right, #667eea, #764ba2);
-      color: white;
-      text-align: center;
-    }
+<style>
 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
 
-    header {
-      padding: 20px;
-      font-size: 48px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      background: rgba(0,0,0,0.2);
-      backdrop-filter: blur(10px);
-    }
+body{
+background:linear-gradient(to right,#667eea,#764ba2);
+min-height:100vh;
+color:white;
+}
 
+/* DETAILS PAGE */
 
-    #searchBox {
-      margin: 30px;
-    }
+.details-page{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-items:center;
+gap:50px;
+padding:60px 30px;
+min-height:100vh;
+}
 
-    input {
-      padding: 12px;
-      width: 250px;
-      border-radius: 25px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-    }
+.details-book-image{
+width:320px;
+height:460px;
+object-fit:cover;
+border-radius:20px;
+box-shadow:0 15px 25px rgba(0,0,0,0.35);
+transition:0.3s;
+}
 
-    button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 25px;
-      background: #ff7a18;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: 0.3s;
-    }
+.details-book-image:hover{
+transform:scale(1.03);
+}
 
-    button:hover {
-      background: #ff3d00;
-      transform: scale(1.05);
-    }
+.details-info{
+max-width:550px;
+text-align:left;
+background:rgba(255,255,255,0.08);
+padding:35px;
+border-radius:20px;
+backdrop-filter:blur(10px);
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
 
+.details-title{
+font-size:46px;
+font-weight:bold;
+margin-bottom:15px;
+line-height:1.2;
+}
 
-    #container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 25px;
-      padding: 20px;
-    }
+.details-author{
+font-size:28px;
+margin-bottom:20px;
+color:#f1f1f1;
+}
 
+.details-text{
+font-size:20px;
+margin:14px 0;
+line-height:1.6;
+color:white;
+}
 
-    .card {
-      background: white;
-      color: black;
-      border-radius: 15px;
-      padding: 15px;
-      transition: 0.3s;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
+.details-price{
+font-size:32px;
+font-weight:bold;
+color:#ffd54f;
+margin-top:20px;
+}
 
-    .card:hover {
-      transform: translateY(-10px) scale(1.03);
-    }
+.details-btn{
+margin-top:30px;
+padding:14px 28px;
+border:none;
+border-radius:30px;
+background:#ff7a18;
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
 
-    img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
+.details-btn:hover{
+background:#ff3d00;
+transform:scale(1.05);
+}
 
-    h3 {
-      margin: 10px 0;
-      font-size: 16px;
-    }
+</style>
 
-    p {
-      color: gray;
-      font-size: 14px;
-    }
-    
-    .no-results {
-      font-size: 20px;
-      margin-top: 20px;
-    }
-    #sortingButtons {
-      display: flex;
-      justify-content: right;
-      margin-bottom: 20px;
-    }
-    .sort-button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 25px;
-      background: #4caf50;
-      margin: 10px;
-      display: flex;
-      justify-content: center;
-    }
-  </style>
 </head>
+
 <body>
 
+<div class="details-page">
 
-  <header>📚 Book Explorer</header>
+<img id="bookImage" class="details-book-image">
 
+<div class="details-info">
 
-  <div id="searchBox">
-    <input type="text" id="searchInput" placeholder="Search books...">
-    <button onclick="searchBooks()">Search</button>
-  </div>
-  <div id="sortingButtons">
-    <button class="sort-button" onclick="sortAZ()">Sort A-Z</button>
-    <button class="sort-button" onclick="sortZA()">Sort Z-A</button>
-  </div>
-  <h2 style="text-align: left;">Recommendations:</h2>
-  
-  <div id="container"></div>
+<h1 id="title" class="details-title"></h1>
 
-  <script src="script.js"></script>
+<h2 id="author" class="details-author"></h2>
 
+<p class="details-text">
+<b>Publisher:</b>
+<span id="publisher"></span>
+</p>
 
+<p class="details-text">
+<b>Pages:</b>
+<span id="pages"></span>
+</p>
 
+<p class="details-price">
+₹499
+</p>
 
+<button class="details-btn" onclick="goBack()">⬅ Back</button>
 
-</body></html>
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("title").innerText =
+localStorage.getItem("title");
+
+document.getElementById("author").innerText =
+localStorage.getItem("author");
+
+document.getElementById("bookImage").src =
+localStorage.getItem("image");
+
+document.getElementById("publisher").innerText =
+localStorage.getItem("publisher");
+
+document.getElementById("pages").innerText =
+localStorage.getItem("pages");
+
+function goBack(){
+window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>
